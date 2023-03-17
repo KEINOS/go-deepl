@@ -1,0 +1,95 @@
+# =============================================================================
+#  Docker Compose file for testing on Go versions 1.17 to the latest.
+# =============================================================================
+# It is recommended to run specifying a specific Go version and not at once.
+#
+# Since the service `tidy` will update/re-write the "go.mod" file to the latest
+# module version, during it's process the "go.mod" file will be gone temporarily.
+# Thus, `docker compose up` will cause failure in the other container because of
+# missing "go.mod" file.
+#
+# - Recommended usage:
+#   - To update go.mod:
+#     $ docker compose --file ./.github/docker-compose.yml run update
+#   - To test:
+#     $ docker compose --file ./.github/docker-compose.yml run v1_17
+#   - Lint check and static analysis:
+#     $ docker compose --file ./.github/docker-compose.yml run lint
+#
+# - NOT recommended to run all tests at once whith "up":
+#     $ docker compose up
+version: "3.9"
+
+volumes:
+  GO_PKG_MOD:
+
+services:
+  # Updates the go.mod to the latest
+  update:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.17-alpine
+    volumes:
+      - ..:/workspaces
+    entrypoint: [ "make", "update" ]
+  # Run latest golangci-lint (lint check and static analysis)
+  lint:
+    image: golangci/golangci-lint:latest
+    working_dir: /workspaces
+    volumes:
+      - ..:/workspaces
+      - GO_PKG_MOD:/go/pkg/mod
+    entrypoint: golangci-lint run
+  # Run latest govulncheck (vulnerability scanner)
+  vuln:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: alpine
+        GOINSTALL: golang.org/x/vuln/cmd/govulncheck@latest
+    volumes:
+      - ..:/workspaces
+    entrypoint: [ "make", "vuln" ]
+  # Runs unit tests on Go v1.17
+  v1_17:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.17-alpine
+    volumes:
+      - ..:/workspaces
+      - GO_PKG_MOD:/go/pkg/mod
+  # Runs unit tests on Go Go v1.18
+  v1_18:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.18-alpine
+    volumes:
+      - ..:/workspaces
+      - GO_PKG_MOD:/go/pkg/mod
+  # Runs unit tests on Go v1.19
+  v1_19:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.19-alpine
+    volumes:
+      - ..:/workspaces
+      - GO_PKG_MOD:/go/pkg/mod
+  # Runs unit tests on latest Go version
+  latest:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: alpine
+    volumes:
+      - ..:/workspaces
+      - GO_PKG_MOD:/go/pkg/mod
