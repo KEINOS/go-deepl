@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 shopper
+Copyright (c) 2022 [shopper29](https://github.com/shopper29/), [KEINOS and the go-deepl contributors](https://github.com/KEINOS/go-deepl/graphs/contributors).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,0 +1,36 @@
+# This file contains configuration options for GolangCI-Lint.
+run:
+  tests: true
+  fast: true
+  build-tags:
+    - golangci
+  skip-dirs:
+    - .github
+  allow-parallel-runners: true
+output:
+  format: colored-line-number
+  sort-results: true
+linters:
+  enable-all: true
+  disable:
+  # Disabled deprecated linters
+  - nosnakecase
+  - scopelint
+  - golint
+  - deadcode
+  - interfacer
+  - varcheck
+  - exhaustivestruct
+  - ifshort
+  - maligned
+  # Disabled because of generics
+  - rowserrcheck
+  - sqlclosecheck
+  - structcheck
+  - wastedassign
+  # Disabled because of testing private functions
+  - testpackage
+  # We allow global variable by design
+  - gochecknoglobals
+  # Due to the DeepL API JSON format allow snake_case keys
+  - tagliatelle

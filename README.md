@@ -1,39 +1,65 @@
-# deepl-go
-This library provides a simple API client function for Deepl.
+# go-deepl
+
+[go-deepl](https://github.com/KEINOS/go-deepl) is a simple Go library for DeepL API client.
+
+> __Note__: It is a fork from [deepl-go](https://github.com/shopper29/deepl-go) by [shopper29](https://github.com/shopper29/) with some modifications. Such as security updates, replacing deprecated modules, code coverage, etc.
 
 ## Usage
-1. Install package
-   ```console
-   > go get github.com/DaikiYamakawa/deepl-go
-   ```
-2. We should register valid API key in the environment variable.
-    ```console
-    > export DEEPL_API_KEY=xxx-xxx-xxx
-    ```
-3. We can call deepl library in our code.
-   ```golang
-    package main
 
-    import (
-        "context"
-        "fmt"
+```go
+go get github.com/KEINOS/go-deepl
+```
 
-        "github.com/DaikiYamakawa/deepl-go"
+```go
+import "github.com/KEINOS/go-deepl/deepl"
+```
+
+### Requirements
+
+- You need an account of [DeepL API Free or Pro](https://www.deepl.com/pro#developer).
+- The environment variable `DEEPL_API_KEY` and a valid API key ("Authentication Key for DeepL API" from [your account settings](https://www.deepl.com/account/summary)) must be set.
+
+## Examples
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+
+    "github.com/KEINOS/go-deepl/deepl"
+)
+
+func main() {
+    // Create a client for free account of DeepL API (choices: deepl.APIFree,
+    // deepl.APIPro, deepl.APICustom). The second arg is the logger. If nil,
+    // the default logger is used. Which logs to stderr.
+    cli, err := deepl.New(deepl.APIFree, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    translateResponse, err := cli.TranslateSentence(
+        context.Background(),
+        "Hello", // Phrase to translate
+        "EN",    // from English
+        "JA",    // to Japanese
     )
 
-    func main() {
-        cli, err := deepl.New("https://api.deepl.com", nil)
-        if err != nil {
-            fmt.Printf("Failed to create client:\n   %+v\n", err)
-        }
-        translateResponse, err := cli.TranslateSentence(context.Background(), "Hello", "EN", "JA")
-        if err != nil {
-            fmt.Printf("Failed to translate text:\n   %+v\n", err)
-        } else {
-            fmt.Printf("%+v\n", translateResponse)
-        }
+    if err != nil {
+        log.Fatal(err)
+    } else {
+        fmt.Printf("%+v\n", translateResponse)
     }
-   ```
-   ```console
-   &{Translations:[{DetectedSourceLanguage:EN Text:こんにちは}]}
-   ```
+    // Output:
+    // &{Translations:[{DetectedSourceLanguage:EN Text:こんにちは}]}
+}
+```
+
+```console
+```
+
+## License and Authors
+
+- [MIT License](https://github.com/KEINOS/go-deepl/blob/main/LICENSE.md). Copyright (c) 2023 [shopper29](https://github.com/shopper29/), [KEINOS and the go-deepl contributors](https://github.com/KEINOS/go-deepl/graphs/contributors).
