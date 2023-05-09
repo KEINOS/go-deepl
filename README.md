@@ -1,3 +1,7 @@
+<!-- markdownlint-disable MD001 MD041 MD050 MD033 -->
+[![go1.17+](https://img.shields.io/badge/Go-1.17--latest-blue?logo=go)](https://github.com/KEINOS/go-deepl/blob/main/.github/workflows/unit-tests.yml "Supported versions")
+[![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-deepl.svg)](https://pkg.go.dev/github.com/KEINOS/go-deepl/deepl "Read generated documentation of the package")
+
 # go-deepl
 
 [go-deepl](https://github.com/KEINOS/go-deepl) is a simple Go library for DeepL API client.
@@ -57,8 +61,7 @@ func main() {
 }
 ```
 
-```console
-```
+- [See more examples](https://pkg.go.dev/github.com/KEINOS/go-deepl/deepl#pkg-examples) @ GoDocs
 
 ## License and Authors
 
